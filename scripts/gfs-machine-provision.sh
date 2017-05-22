@@ -1,3 +1,3 @@
 #!/bin/bash
-apt-get update
-apt-get install glusterfs-server
+apt-get -y update
+apt-get -y install glusterfs-server

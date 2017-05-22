@@ -18,6 +18,10 @@
         "description": "Size of vm"
       }
     },
+    "sizeOfEachDataDiskInGB": {
+      "type": "string",
+      "defaultValue": "500"
+    },
     "username": {
       "type": "string",
       "metadata": {
@@ -143,7 +147,19 @@
           "osDisk": {
             "caching": "ReadWrite",
             "createOption": "FromImage"
-          }
+          },
+          "dataDisks": [
+            {
+              "diskSizeGB": "[parameters('sizeOfEachDataDiskInGB')]",
+              "lun": 0,
+              "createOption": "Empty"
+            },
+            {
+              "diskSizeGB": "[parameters('sizeOfEachDataDiskInGB')]",
+              "lun": 1,
+              "createOption": "Empty"
+            }
+          ]
         },
         "networkProfile": {
           "networkInterfaces": [
@@ -169,7 +185,7 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": [
-            "https://raw.github.com/chrisvugrinec/azure-glusterfs-demo/scripts/gfs-machine-provision.sh"
+            "https://raw.githubusercontent.com/chrisvugrinec/azure-glusterfs-demo/master/scripts/gfs-machine-provision.sh"
           ],
           "commandToExecute": "[variables('command')]"
         }
