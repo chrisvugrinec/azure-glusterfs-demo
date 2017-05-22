@@ -1,0 +1,13 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vmSize":   { "value": "Standard_D1" },
+    "username": { "value": "chris" },
+    "password": { "value": "HelloWorld123!" },
+    "dnsNameForPublicIP": { "value": "glusterdemo2"  },
+    "existingVirtualNetworkName": { "value": "vnet-demo1" },
+    "existingSubnetName": { "value": "subnet-demo1-1" },
+    "existingVirtualNetworkResourceGroup": { "value": "demo1" }
+  }
+}
