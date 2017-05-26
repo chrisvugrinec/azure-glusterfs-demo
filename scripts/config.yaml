@@ -6,6 +6,9 @@
   - copy:
       src: tmp_hosts
       dest: /tmp/tmp_hosts
+  - name: finding out number of host
+    shell: hostname | sed 's/^.*[-]//' | sed 's/VM//'
+    register: hostnumber
   - name: adding hosts to hosts file
     shell: cat /tmp/tmp_hosts
     register: hosts_line
@@ -16,27 +19,40 @@
         {{ hosts_line.stdout }}
     become: true
     become_user: root
-  - name: format disk C
-    shell: mkfs.ext4 -L dataDiskC /dev/sdc
-    become: true
-    become_user: root
-  - name: format disk D
-    shell: mkfs.ext4 -L dataDiskD /dev/sdd
-    become: true
-    become_user: root
   - file:
-      path: /mnt/datadisk1
+      path: /mnt/brick{{ hostnumber.stdout }}
       state: directory
       mode: 0755
-  - file:
-      path: /mnt/datadisk2
-      state: directory
-      mode: 0755
-  - name: mount disk C to datadisk1
-    shell: mount /dev/sdc /mnt/datadisk1
     become: true
     become_user: root
-  - name: mount disk D to datadisk2
-    shell: mount /dev/sdd /mnt/datadisk2
+  - name: create mdam volume over sdc and sdd
+    shell: yes | mdadm --create md0 --level=0 --chunk=256K --raid-devices=2 /dev/sdc /dev/sdd
+    become: true
+    become_user: root
+  - name: create mdam config file
+    shell: mdadm --examine --scan | sudo tee /etc/mdadm.conf
+    become: true
+    become_user: root
+  - name: create physical volume over raid set
+    shell: pvcreate --dataalignment 1024K /dev/md/md0
+    become: true
+    become_user: root
+  - name: create volume group
+    shell: vgcreate --physicalextentsize 256K rhgs-data /dev/md/md0
+    become: true
+    become_user: root
+  - name: create logical volume
+    shell: lvcreate -L 1900g -T rhgs-data/brick{{ hostnumber.stdout }} -c 256K
+    become: true
+    become_user: root
+  - name: format volume
+    shell: mkfs.xfs -f -K -i size=512 -n size=8192 /dev/rhgs-data/brick{{ hostnumber.stdout }}
+    become: true
+    become_user: root
+  - name: add mountpoint to fstab
+    blockinfile:
+      path: /etc/fstab
+      block: |
+        /dev/rhgs-data/brick{{ hostnumber.stdout }}   /mnt/brick{{ hostnumber.stdout }}   xfs   defaults,inode64,nobarrier,noatime,nouuid 0 2
     become: true
     become_user: root

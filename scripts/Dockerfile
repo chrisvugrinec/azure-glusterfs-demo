@@ -14,6 +14,7 @@ ENV ANSIBLE_LIBRARY /opt/ansible/library
 ENV PYTHONPATH /opt/ansible/lib:$PYTHON_PATH
 
 COPY demo.sh /opt/
+COPY config.yaml /opt/
 COPY gfs-machine-parameters.json /opt/
 COPY gfs-machine-provision.sh /opt/
 COPY gfs-machine.json /opt/

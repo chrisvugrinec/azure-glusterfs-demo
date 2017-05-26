@@ -80,7 +80,7 @@ do
   echo "adding host: "$dnsname-$i".$region.cloudapp.azure.com to knownhosts file"
   ssh-keyscan -H $dnsname-$i.$region.cloudapp.azure.com >>~/.ssh/known_hosts
   echo "copying the key"
-  sshpass -p "$password" ssh-copy-id -f username@$dnsname-$i.$region.cloudapp.azure.com
+  sshpass -p "$password" ssh-copy-id -f $username@$dnsname-$i.$region.cloudapp.azure.com
 done
 
 # Ansible config
