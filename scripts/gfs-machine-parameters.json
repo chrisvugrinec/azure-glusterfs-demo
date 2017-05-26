@@ -8,6 +8,7 @@
     "dnsNameForPublicIP": { "value": "X_DNSNAME_X"  },
     "existingVirtualNetworkName": { "value": "X_VNET_X" },
     "existingSubnetName": { "value": "X_SUBNET_X" },
-    "existingVirtualNetworkResourceGroup": { "value": "X_RESOURCEGROUP_X" }
+    "existingVirtualNetworkResourceGroup": { "value": "X_RESOURCEGROUP_X" },
+    "sshKey": { "value": X_SSH_X }
   }
 }
