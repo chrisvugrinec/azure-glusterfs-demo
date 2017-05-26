@@ -20,7 +20,7 @@
     },
     "sizeOfEachDataDiskInGB": {
       "type": "string",
-      "defaultValue": "500"
+      "defaultValue": "1000"
     },
     "username": {
       "type": "string",
