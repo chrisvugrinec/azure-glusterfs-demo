@@ -57,6 +57,9 @@
       "metadata": {
         "description": "Name of the existing VNET resource group"
       }
+    },
+    "sshKey": {
+      "type": "string"
     }
   },
   "variables": {
@@ -77,7 +80,7 @@
 
     "vnetID": "[resourceId(parameters('existingVirtualNetworkResourceGroup'), 'Microsoft.Network/virtualNetworks', parameters('existingVirtualNetworkName'))]",
     "subnetRef": "[concat(variables('vnetID'),'/subnets/', variables('subnetName'))]",
-    "command": "sh gfs-machine-provision.sh"
+    "command": "[concat('sh gfs-machine-provision.sh ',parameters('sshKey')]"
   },
   "resources": [
     {
