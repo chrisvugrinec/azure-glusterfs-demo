@@ -1,0 +1,18 @@
+---
+- hosts: glusterfs-cluster
+  vars:
+  remote_user: chris
+  tasks:
+  - copy:
+      src: tmp_hosts
+      dest: /tmp/tmp_hosts
+  - name: adding hosts to hosts file
+    shell: cat /tmp/tmp_hosts
+    register: hosts_line
+  - name: add hosts to hostfile
+    blockinfile:
+      path: /etc/hosts
+      block: |
+        {{ hosts_line.stdout }}
+    become: true
+    become_user: root
