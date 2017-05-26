@@ -70,3 +70,6 @@ do
      --template-file gfs-machine.json \
      --parameters @./output/gfs-machine-parameters$i.json 
 done
+
+echo "distributing keys:"
+sshpass -p "$password" ssh-copy-id -f $user@$resourcegroup.westeurope.cloudapp.azure.com

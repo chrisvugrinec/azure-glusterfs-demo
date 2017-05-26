@@ -1,6 +1,6 @@
 FROM ubuntu
 RUN apt-get update
-RUN apt-get install -y curl python-yaml python-jinja2 git vim
+RUN apt-get install -y curl python-yaml python-jinja2 git vim sshpass
 RUN git clone http://github.com/ansible/ansible.git /opt/ansible
 RUN echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ wheezy main" | \
      tee /etc/apt/sources.list.d/azure-cli.list
