@@ -3,6 +3,8 @@
 echo "name of your solution: (should be unique as it will be used in DNS)"
 read resourcegroup
 
+region="westeurope"
+
 echo "how many machines would you like to create:"
 read nrofmachines
 
@@ -27,7 +29,7 @@ az account set --subscription $subscription
 echo "creating resource group:"
 az group create \
   --name $resourcegroup \
-  --location "westeurope"
+  --location $region
 
 
 # Create network
@@ -75,8 +77,38 @@ echo "distributing keys:"
 for (( i=1; i <= $nrofmachines; i++ ))
 do
 
-  echo "adding host: "$dnsname-$i".westeurope.cloudapp.azure.com to knownhosts file"
-  ssh-keyscan -H $dnsname-$i.westeurope.cloudapp.azure.com >>~/.ssh/known_hosts
+  echo "adding host: "$dnsname-$i".$region.cloudapp.azure.com to knownhosts file"
+  ssh-keyscan -H $dnsname-$i.$region.cloudapp.azure.com >>~/.ssh/known_hosts
   echo "copying the key"
-  sshpass -p "$password" ssh-copy-id -f $username@$dnsname-$i.westeurope.cloudapp.azure.com
+  sshpass -p "$password" ssh-copy-id -f username@$dnsname-$i.$region.cloudapp.azure.com
+done
+
+# Ansible config
+
+if [ ! -d /etc/ansible ]
+then
+  mkdir /etc/ansible
+fi
+
+echo "[glusterfs-cluster]">/etc/ansible/hosts
+
+echo "config ansible:"
+for (( i=1; i <= $nrofmachines; i++ ))
+do
+  echo "adding host: "$dnsname-$i".$region.cloudapp.azure.com to ansible hostfile"
+  echo "$dnsname-$i.$region.cloudapp.azure.com">>/etc/ansible/hosts
+done
+
+# Hosts file
+
+echo "" >tmp_hosts
+
+for (( i=1; i <= $nrofmachines; i++ ))
+do
+  echo "adding hosts line:"
+  ip=$(ssh $username@$dnsname-$i.$region.cloudapp.azure.com 'hostname --ip-address')
+  echo "ip: "$ip
+  host=$(ssh $username@$dnsname-$i.$region.cloudapp.azure.com 'hostname')
+  echo "host: "$host
+  echo $ip"   "$host>>tmp_hosts
 done
