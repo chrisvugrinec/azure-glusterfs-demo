@@ -54,7 +54,7 @@ do
    echo "creating arm template for machine: ./output/gfs-machine-parameters"$i
    cat gfs-machine-parameters.json | sed 's/X_USERNAME_X/'$username'/' > ./output/gfs-machine-parameters$i.json
    sed -in 's/X_PASSWORD_X/'$password'/' ./output/gfs-machine-parameters$i.json
-   sed -in 's/X_DNSNAME_X/'$dnsname'/' ./output/gfs-machine-parameters$i.json
+   sed -in 's/X_DNSNAME_X/'$dnsname'-'$i'/' ./output/gfs-machine-parameters$i.json
    sed -in 's/X_VNET_X/vnet-'$resourcegroup'/' ./output/gfs-machine-parameters$i.json
    sed -in 's/X_SUBNET_X/subnet-'$resourcegroup'-1/' ./output/gfs-machine-parameters$i.json
    sed -in 's/X_RESOURCEGROUP_X/'$resourcegroup'/' ./output/gfs-machine-parameters$i.json
@@ -72,4 +72,11 @@ do
 done
 
 echo "distributing keys:"
-sshpass -p "$password" ssh-copy-id -f $user@$resourcegroup.westeurope.cloudapp.azure.com
+for (( i=1; i <= $nrofmachines; i++ ))
+do
+
+  echo "adding host: "$dnsname-$i".westeurope.cloudapp.azure.com to knownhosts file"
+  ssh-keyscan -H $dnsname-$i.westeurope.cloudapp.azure.com >>~/.ssh/known_hosts
+  echo "copying the key"
+  sshpass -p "$password" ssh-copy-id -f $username@$dnsname-$i.westeurope.cloudapp.azure.com
+done
