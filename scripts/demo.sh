@@ -112,3 +112,6 @@ do
   echo "host: "$host
   echo $ip"   "$host>>tmp_hosts
 done
+
+echo "now configuring with ansible"
+ansible-playbook config.yaml

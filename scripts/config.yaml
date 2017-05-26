@@ -16,3 +16,27 @@
         {{ hosts_line.stdout }}
     become: true
     become_user: root
+  - name: format disk C
+    shell: mkfs.ext4 -L dataDiskC /dev/sdc
+    become: true
+    become_user: root
+  - name: format disk D
+    shell: mkfs.ext4 -L dataDiskD /dev/sdd
+    become: true
+    become_user: root
+  - file:
+      path: /mnt/datadisk1
+      state: directory
+      mode: 0755
+  - file:
+      path: /mnt/datadisk2
+      state: directory
+      mode: 0755
+  - name: mount disk C to datadisk1
+    shell: mount /dev/sdc /mnt/datadisk1
+    become: true
+    become_user: root
+  - name: mount disk D to datadisk2
+    shell: mount /dev/sdd /mnt/datadisk2
+    become: true
+    become_user: root
