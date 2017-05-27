@@ -19,6 +19,9 @@ dnsname=$(echo $resourcegroup | sed 's/-//' )
 vnetname="vnet-"$resourcegroup
 snetname="subnet-"$resourcegroup
 
+# change username for ansible
+sed -in 's/X_USER_X/'$username'/' config.yaml 
+
 az login
 az account list --output table 
 echo "please select subscription:"

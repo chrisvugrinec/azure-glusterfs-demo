@@ -1,7 +1,7 @@
 ---
 - hosts: glusterfs-cluster
   vars:
-  remote_user: chris
+  remote_user: X_USER_X
   tasks:
   - copy:
       src: tmp_hosts
