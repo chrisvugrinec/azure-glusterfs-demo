@@ -7,6 +7,10 @@
 # gluster vol create dist-vol glusterdemo-chris-1VM:/mnt/brick1/dist-vol glusterdemo-chris-2VM:/mnt/brick2/dist-vol 
 #
 
+for host in $(cat /tmp/tmp_hosts | grep VM | sed 's/^.*[\ ]//')
+do
+  gluster peer detach $host
+done
 
 # prep
 for host in $(cat /tmp/tmp_hosts | grep VM | sed 's/^.*[\ ]//')
@@ -15,6 +19,8 @@ do
   nr=$(echo $host | sed 's/^.*[-]//' | sed 's/VM//')
   command+=" "$host:/mnt/brick$nr/dist-vol
 done
+
+echo "command needs to be: gluster vol create dist-vol $command"
 
 # creating the gluster cluster
 gluster vol create dist-vol $command
