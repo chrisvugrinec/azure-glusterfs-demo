@@ -12,4 +12,5 @@ Gluster is an open source solution that provides you network storage freedom. So
 
 More info:
 - Technology used: Ubuntu/ Gluster/ Docker/ Azure ARM templates/ AZ CLI 2.0/ Ansible
+- https://gluster.readthedocs.io/en/latest/Administrator%20Guide/GlusterFS%20Introduction/
 - https://blogs.msdn.microsoft.com/azurecat/2017/03/31/implementing-glusterfs-on-azure-hpc-scalable-parallel-file-system/
