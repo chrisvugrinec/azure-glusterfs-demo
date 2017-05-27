@@ -10,4 +10,5 @@ Gluster is an open source solution that provides you network storage freedom. So
 - Easily add or shrink your storage by adding or removing bricks to your gluster volume
 - Tune your IO behaviour with several tuning settings
 
+Useful resource: https://blogs.msdn.microsoft.com/azurecat/2017/03/31/implementing-glusterfs-on-azure-hpc-scalable-parallel-file-system/
 Technology used: Ubuntu/ Gluster/ Docker/ Azure ARM templates/ AZ CLI 2.0/ Ansible
