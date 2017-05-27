@@ -9,6 +9,7 @@
   - copy:
       src: gluster-volume.sh
       dest: /tmp/gluster-volume.sh
+      mode: 0750
   - name: finding out number of host
     shell: hostname | sed 's/^.*[-]//' | sed 's/VM//'
     register: hostnumber
@@ -59,4 +60,8 @@
         /dev/rhgs-data/brick{{ hostnumber.stdout }}   /mnt/brick{{ hostnumber.stdout }}   xfs   defaults,inode64,nobarrier,noatime,nouuid 0 2
     become: true
     become_user: root
-  - script: /tmp/gluster-volume.sh
+  - name: configure gluster cluster
+    shell: /tmp/gluster-volume.sh
+    ignore_errors: True
+    become: true
+    become_user: root
