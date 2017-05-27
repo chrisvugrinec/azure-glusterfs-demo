@@ -1,6 +1,5 @@
 ---
 - hosts: glusterfs-cluster
-  serial: 1
   vars:
   remote_user: X_USER_X
   tasks:
