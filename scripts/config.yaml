@@ -50,7 +50,7 @@
     become: true
     become_user: root
   - name: format volume
-    shell: mkfs.xfs -f -K -i size=512 -n size=8192 /dev/rhgs-data/brick{{ hostnumber.stdout }}
+    shell: mkfs.xfs -f -K /dev/rhgs-data/brick{{ hostnumber.stdout }}
     become: true
     become_user: root
   - name: add mountpoint to fstab
@@ -58,6 +58,10 @@
       path: /etc/fstab
       block: |
         /dev/rhgs-data/brick{{ hostnumber.stdout }}   /mnt/brick{{ hostnumber.stdout }}   xfs   defaults,inode64,nobarrier,noatime,nouuid 0 2
+    become: true
+    become_user: root
+  - name: mount volumes
+    shell: mount -a
     become: true
     become_user: root
   - name: configure gluster cluster

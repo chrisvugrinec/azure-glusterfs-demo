@@ -7,6 +7,7 @@
 # gluster vol create dist-vol glusterdemo-chris-1VM:/mnt/brick1/dist-vol glusterdemo-chris-2VM:/mnt/brick2/dist-vol 
 #
 
+
 # prep
 for host in $(cat /tmp/tmp_hosts | grep VM | sed 's/^.*[\ ]//')
 do
