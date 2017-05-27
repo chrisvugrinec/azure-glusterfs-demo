@@ -14,7 +14,7 @@ read username
 echo "password:"
 read password
 
-dnsname=$(echo $resourcegroup | tr "-" "")
+dnsname=$(echo $resourcegroup | sed 's/-//' )
 
 vnetname="vnet-"$resourcegroup
 snetname="subnet-"$resourcegroup
