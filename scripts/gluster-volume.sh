@@ -23,6 +23,11 @@ then
   done
   echo "command to be executed: gluster vol create dist-vol $command"
 
+  # 1st time fails bfix
+  if [ -d /mnt/brick1/dist-vol ]
+  then
+    rm -rf /mnt/brick1/dist-vol
+  fi
   gluster vol create dist-vol $command
   gluster volume start dist-vol
 fi
