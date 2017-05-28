@@ -11,7 +11,8 @@ mkdir -p /mnt/gluster
 hostname=`hostname`
 nr=$(echo $hostname | sed 's/^.*[-]//' | sed 's/VM//')
 
-# creating the gluster cluster, only on 1st machine needed
+# creating the gluster cluster, 
+# needs to be done only once, so I am only doing it once vm 1
 if [[ $nr == "1" ]]
 then
   # prep
@@ -32,6 +33,3 @@ then
   gluster volume start dist-vol
 fi
 
-
-# Mounting the gluster volume
-mount -t glusterfs $hostname:/dist-vol /mnt/gluster

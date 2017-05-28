@@ -10,6 +10,10 @@
       src: gluster-volume.sh
       dest: /tmp/gluster-volume.sh
       mode: 0750
+  - copy:
+      src: mount-volume.sh
+      dest: /tmp/mount-volume.sh
+      mode: 0750
   - name: finding out number of host
     shell: hostname | sed 's/^.*[-]//' | sed 's/VM//'
     register: hostnumber
@@ -68,6 +72,15 @@
     shell: /tmp/gluster-volume.sh
     register: task_result
     until: task_result.rc == 0
+    retries: 3
+    delay: 1
+    ignore_errors: yes
+    become: true
+    become_user: root
+  - name: mount gluster cluster
+    shell: /tmp/mount-volume.sh
+    register: task_mresult
+    until: task_mresult.rc == 0
     retries: 3
     delay: 1
     ignore_errors: yes
